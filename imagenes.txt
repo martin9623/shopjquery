@@ -1,0 +1,25 @@
+Productos para probar la carga al local storage.
+
+--------------------------------------
+
+pantalon:
+
+https://www.tripstore.com.ar/media/catalog/product/cache/4769e4d9f3516e60f2b4303f8e5014a8/B/V/BV4546-010_0.jpg
+
+Marca: Nike
+
+Descripcion: pantalon
+
+precio: 7500
+
+---------------------------------------
+
+campera:
+
+https://www.moovbydexter.com.ar/on/demandware.static/-/Sites-dabra-catalog/default/dw82ec78d0/products/NI_CJ4888-657/NI_CJ4888-657-1.JPG
+
+Marca: Nike
+
+Descripcion: Campera
+
+precio: 11500

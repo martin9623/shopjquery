@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/44980252ee.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <title>Shop</title>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav mw">
+            <a class="nav__logo" href="#">Shop</a>
+
+            <div class="nav__menu">
+                <button id="btn-admin" class="btn">
+                    <i class="fas fa-user-cog"></i>
+                    Admin
+                </button>
+                <button id="btn-login" class="btn">
+                    <i class="fas fa-user"></i>
+                    Iniciar sesion
+                </button>
+                <button id="btn-cart" class="btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <!-- cantidad de prod en carrito -->
+                    <!-- <span id="btn-cart-num" class="btn-cart-num">0</span> -->
+                    Carrito
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <section id="admin" class="modal-cont">
+        <form id="formAdmin" action="" class="modal">
+            <h1>Agregar producto</h1>
+            <input class="input" type="text" name="url" id="urlForm" placeholder="Ingrese url (opcional)">
+            <input class="input" type="text" name="marca" id="marcaForm" placeholder="Marca" required>
+            <input class="input" type="text" name="descripcion" id="descripcionForm" placeholder="Descripcion" required>
+            <input class="input" type="number" name="precio" id="precioForm" placeholder="Precio" required>
+            <button class="btn btn-green" type="submit">Iniciar sesion</button>
+            <button id="btn-clear-memo" class="btn btn-red" type="button">Borrar memoria</button>
+            <button id="btn-close-admin" class="btn btn-red" type="button">Cerrar</button>
+        </form>
+    </section>
+
+    <section id="login" class="modal-cont">
+        <form id="formLogin" action="" class="modal">
+            <h1>Iniciar sesion</h1>
+            <input class="input" type="email" name="email" id="email" placeholder="ejemplo@ejemplo.com" required>
+            <input class="input" type="password" name="password" id="password" placeholder="password" required>
+            <button class="btn btn-blue" type="submit">Iniciar sesion</button>
+            <button id="btn-close-login" class="btn btn-red" type="submit">Cerrar</button>
+            <a class="link" href="#">Crear cuenta</a>
+            <a class="link" href="#">Recuperar contraseña</a>
+        </form>
+    </section>
+
+    <section id="cart" class="modal-cont">
+        <div id="formCart" action="" class="modal">
+            <h1>Carrito</h1>
+            <div id="cart-cont" class="cart-cont">
+                <!-- template -->
+                <!-- <div id="cart-card" class="cart-card">
+                    <div class="cart-card__cont">
+                        <img class="cart-card__cont__img"
+                            src="https://http2.mlstatic.com/D_NQ_NP_912153-MLA28193471842_092018-O.jpg">
+                    </div>
+                    <h5 class="cart-card__title">Nike</h5>
+                    <p class="cart-card__desc">Remera</p>
+                    <p class="cart-card__precio">$1500</p>
+                </div> -->
+            </div>
+            <span class="cart-total">Total:</span>
+            <div>
+                <button class="btn btn-green" type="submit">Comprar</button>
+                <button id="btn-clear-cart" class="btn btn-red" type="button">Vaciar carrito</button>
+                <button id="btn-close-cart" class="btn btn-red" type="submit">Cerrar</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="banner">
+        <img class="banner__img" src="media/banner.jpg" alt="">
+    </section>
+
+    <section id="main" class="main mw">
+        <!-- template -->
+        <!-- <div class="card">
+            <div class="card-img">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_912153-MLA28193471842_092018-O.jpg" alt=""
+                    class="card-img__cont">
+            </div>
+            <h5 id="card-title" class="card-title">Nike</h5>
+            <p id="card-desc" class="card-desc">Remera</p>
+            <p id="card-precio" class="card-precio">1500</p>
+            <button id="btn-add-cart" class="btn-add-cart card-btn btn btn-blue">
+                <i class="fas fa-cart-plus"></i>Añadir al
+                carrito
+            </button>
+        </div> -->
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script/script.js"></script>
+</body>
+
+</html>
