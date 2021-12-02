@@ -106,6 +106,7 @@ a {
   border: 1px solid var(--grey);
   margin: 10px auto;
   max-width: 320px;
+  text-align: center;
 }
 
 .card-img__cont {
@@ -113,20 +114,20 @@ a {
 }
 
 .card-title {
-  padding: 10px 0 10px 10px;
   font-size: 1.5rem;
   font-weight: 400;
   text-transform: capitalize;
+  margin: 20px 0;
 }
 
 .card-desc {
-  padding: 10px;
   text-transform: capitalize;
+  margin: 20px 0;
 }
 
 .card-precio {
-  padding: 10px;
   font-size: 1.3rem;
+  margin: 20px 0;
 }
 
 .card-precio::before {
@@ -134,11 +135,16 @@ a {
 }
 
 .card-btn {
-  margin: 20px 30%;
+  width: 140px;
+  height: 56px;
+  margin-bottom: 20px;
+  transition: .5s;
 }
 
 .fa-cart-plus {
-  padding-right: 5px;
+  position: relative;
+  left: -12px;
+  top: 10px;
 }
 
 /*----header----*/
@@ -252,9 +258,11 @@ a {
 
 .cart-card {
   display: flex;
+  flex-direction: column;
   width: 100%;
   justify-content: space-around;
   align-items: center;
+  margin: 40px 0;
 }
 
 .cart-card__cont {
@@ -286,4 +294,56 @@ a {
   text-align: end;
   font-weight: 600;
   font-size: 1.5rem;
+}
+
+@media (min-width:768px) {
+  /*----header----*/
+
+  .nav {
+    flex-wrap: initial;
+  }
+
+  .nav_bar {
+    width: max-content;
+    position: static;
+    padding: 0;
+  }
+
+  .nav__menu {
+    display: flex;
+    justify-content: flex-end;
+    position: static;
+  }
+
+  .btn-menu {
+    display: none;
+  }
+
+  /*----banner----*/
+
+  .banner {
+    height: 300px;
+  }
+
+  .banner__img{
+    width: 100%;
+    object-fit: cover;
+  }
+
+  /*----card----*/
+
+  .main {
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media (min-width:1024px) {
+  /*----card----*/
+  .main {
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+  }
 }

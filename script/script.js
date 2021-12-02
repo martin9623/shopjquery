@@ -10,7 +10,8 @@ $(() => {
     //class
 
     class Producto {
-        constructor(url, marca, descripcion, precio, cantidad) {
+        constructor(id, url, marca, descripcion, precio, cantidad) {
+            this.id = id;
             this.url = url;
             this.marca = marca;
             this.descripcion = descripcion;
@@ -22,16 +23,16 @@ $(() => {
     //Button animation
 
     $('.btn').mousedown((e) => {
-        const btnClass = (e.target.classList);
-        if (btnClass.contains('btn-green')) {
+        const btn = $(e.target);
+
+        if (btn.hasClass('btn-green')) {
             $(e.target).addClass('btn-press-green');
-        } else if (btnClass.contains('btn-red')) {
+        } else if (btn.hasClass('btn-red')) {
             $(e.target).addClass('btn-press-red');
-        } else if (btnClass.contains('btn')) {
+        } else if (btn.hasClass('btn')) {
             $(e.target).addClass('btn-press');
         }
-    });
-    $('.btn').mouseup((e) => {
+    }).mouseup((e) => {
         $(e.target).removeClass('btn-press');
         $(e.target).removeClass('btn-press-red');
         $(e.target).removeClass('btn-press-green');
@@ -66,12 +67,13 @@ $(() => {
 
     //funcion crear productos en el DOM
 
-    function crearProd(img, marca, desc, precio) {
+    function crearProd(id, img, marca, desc, precio) {
         $('#main').append(
             `<div class="card">
                 <div class="card-img">
                     <img id="card-img__cont" src="${img}" alt="" class="card-img__cont">
                 </div>
+                <p id="card-id" class="card-id">${id}</p>
                 <h5 id="card-title" class="card-title">${marca}</h5>
                 <p id="card-desc" class="card-desc">${desc}</p>
                 <p id="card-precio" class="card-precio">${precio}</p>
@@ -85,24 +87,24 @@ $(() => {
 
     //funcion crear productos en el carrito
 
-    function addCart(img, marca, desc, precio, cantidad) {
+    function addCart(id, img, marca, desc, precio, cantidad) {
         $('#cart-cont').append(
             `<div id="cart-card" class="cart-card">
-                <div class="cart-card__cont">
-                    <img class="cart-card__cont__img"
-                        src="${img}">
-                </div>
-                <h5 class="cart-card__title">${marca}</h5>
-                <p class="cart-card__desc">${desc}</p>
-                <p class="cart-card__precio">$${precio}</p>
-                <div id="cart-num-cont" class="cart-btn-cont">
-                        <button id="btn-menos" class="btn-menos btn btn-red">-</button>
-                        <p id="cart-cant" class="cart-cant cart-cantidad">${cantidad}</p>
-                        <button id="btn-mas" class="btn-mas btn btn-blue">+</button>
-                    </div>
+            <div class="cart-card__cont">
+                <img class="cart-card__cont__img"
+                    src="${img}">
             </div>
-            `
-        );
+            <p class="cart-card__id">${id}</p>
+            <h5 class="cart-card__title">${marca}</h5>
+            <p class="cart-card__desc">${desc}</p>
+            <p class="cart-card__precio">$${precio}</p>
+            <div id="cart-num-cont" class="cart-btn-cont">
+                    <button id="btn-menos" class="btn-menos btn btn-red">-</button>
+                    <p id="cart-cant" class="cart-cant cart-cantidad">${cantidad}</p>
+                    <button id="btn-mas" class="btn-mas btn btn-blue">+</button>
+                </div>
+        </div>
+        `);
     }
 
     //datos desde JSON local
@@ -111,7 +113,7 @@ $(() => {
         .then(response => response.json())
         .then(data => {
             data.forEach(producto => {
-                crearProd(producto.img, producto.marca, producto.descripcion, producto.precio);
+                crearProd(producto.id, producto.img, producto.marca, producto.descripcion, producto.precio);
             });
         });
 
@@ -124,11 +126,13 @@ $(() => {
 
     productosMemoria = JSON.parse(productosMemoria);
 
-    productos = productos.concat(productosMemoria);
+    if (productosMemoria != null) {
+        productos = productos.concat(productosMemoria);
+    }
 
     productos.forEach(producto => {
         if (producto != null) {
-            crearProd(producto.url, producto.marca, producto.descripcion, producto.precio);
+            crearProd(producto.id, producto.url, producto.marca, producto.descripcion, producto.precio);
         }
     });
 
@@ -139,7 +143,7 @@ $(() => {
 
         let datos = new FormData(e.target);
 
-        productos.push(new Producto(datos.get('url'), datos.get('marca'), datos.get('descripcion'), datos.get('precio')));
+        productos.push(new Producto(datos.get('id'), datos.get('url'), datos.get('marca'), datos.get('descripcion'), datos.get('precio')));
 
         localStorage.setItem('productos', JSON.stringify(productos));
 
@@ -150,38 +154,43 @@ $(() => {
 
     //añadir al carrito
 
-    let carrito = [];
+    let cart = [];
 
-    let carritoMemoria = localStorage.getItem('carrito');
+    let cartSave = localStorage.getItem('cart');
 
-    carritoMemoria = JSON.parse(carritoMemoria);
+    cartSave = JSON.parse(cartSave);
 
-    if (carritoMemoria != null) {
-        carrito = carrito.concat(carritoMemoria);
+    if (cartSave != null) {
+        cart = cart.concat(cartSave);
     }
 
-    carrito.forEach(producto => {
+    cart.forEach(producto => {
         if (producto != null) {
-            addCart(producto.url, producto.marca, producto.descripcion, producto.precio, producto.cantidad);
+            addCart(producto.id, producto.url, producto.marca, producto.descripcion, producto.precio, producto.cantidad);
         }
     });
 
 
     $('.main').click((e) => {
-        console.log(e.target);
+        let target = $(e.target);
+        let parent = target.parent();
 
-        const nodoPadre = e.target.parentNode;
+        let id = parent.children('p.card-id').text();
+        let imgSrc = parent.children('div.card-img').children('img').attr('src');
+        let marca = parent.children('h5').text();
+        let desc = parent.children('p.card-desc').text();
+        let precio = parent.children('p.card-precio').text();
 
-        const url = nodoPadre.querySelector('.card-img__cont').src;
-        const nombre = nodoPadre.querySelector('.card-title').textContent;
-        const desc = nodoPadre.querySelector('.card-desc').textContent;
-        const precio = nodoPadre.querySelector('.card-precio').textContent;
+        let producto = new Producto(id, imgSrc, marca, desc, precio, 1);
 
-        carrito.push(new Producto(url, nombre, desc, precio, 1));
 
-        localStorage.setItem('carrito', JSON.stringify(carrito));
-
-        location.reload();
+        if (target.hasClass('btn')) {
+            if (target.hasClass('btn-blue')) {
+                cart.push(producto);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                location.reload();
+            }
+        }
     });
 
     //limpiar local storage
@@ -191,43 +200,44 @@ $(() => {
         location.reload();
     });
     $('#btn-clear-cart').click(() => {
-        localStorage.removeItem('carrito');
+        localStorage.removeItem('cart');
         location.reload();
     });
 
     //sumar cantidad cart y guardar en localStorage
 
     $('.cart-btn-cont').click((e) => {
-        const nodoPadre = e.target.parentNode;
-        const cart = nodoPadre.parentNode;
-        const title = cart.querySelector('.cart-card__title').textContent;
-        const desc = cart.querySelector('.cart-card__desc').textContent;
-        const precio = cart.querySelector('.cart-card__precio').textContent.slice(1);
 
-        const btnMas = nodoPadre.querySelector('.btn-mas');
-        const btnMenos = nodoPadre.querySelector('.btn-menos');
-        let cartCant = nodoPadre.querySelector('.cart-cant');
+        let target = $(e.target);
+        let parent = target.parent();
+        let container = parent.parent();
+        let cantidad = Number(parent.children('#cart-cant').text());
 
-        let carritoMemoria = localStorage.getItem('carrito');
-
-        carritoMemoria = JSON.parse(carritoMemoria);
-
-        if (e.target === btnMas) {
-            let value = Number(cartCant.textContent);
-            cartCant.textContent = value + 1;
-        } else if (e.target === btnMenos) {
-            let value = Number(cartCant.textContent);
-            if (value > 1) {
-                cartCant.textContent = value - 1;
+        if (target.hasClass('btn-mas')) {
+            let total = Number(cantidad) + 1;
+            parent.children('#cart-cant').text(total);
+        } else if (target.hasClass('btn-menos')) {
+            if (cantidad > 1) {
+                let total = Number(cantidad) - 1;
+                parent.children('#cart-cant').text(total);
             }
         }
 
-        carritoMemoria.forEach(producto => {
+        let id = container.children('.cart-card__id').text();
+        let title = container.children('.cart-card__title').text();
+        let desc = container.children('.cart-card__desc').text();
+        let precio = container.children('.cart-card__precio').text().slice(1);
+        let cartCant = Number(parent.children('#cart-cant').text());
+
+        let cartSave = localStorage.getItem('cart');
+
+        cartSave = JSON.parse(cartSave);
+
+        cartSave.forEach(producto => {
             if (producto.marca == title && producto.descripcion == desc && producto.precio == precio) {
-                producto.cantidad = cartCant.textContent;
+                producto.cantidad = cartCant;
             }
         });
-
-        localStorage.setItem('carrito', JSON.stringify(carritoMemoria));
+        localStorage.setItem('cart', JSON.stringify(cartSave));
     });
-});
+})
