@@ -3,7 +3,11 @@ $(() => {
     //mostrar menu mobile
 
     $('#btn-menu').click(() => {
-        $('.nav__menu').toggleClass('nav__menu-act');
+        if ($('.nav__menu').css('opacity') == 0) {
+            $('.nav__menu').css('top', '0').css('opacity', '1');
+        } else if ($('.nav__menu').css('opacity') == 1) {
+            $('.nav__menu').css('top', '-60px').css('opacity', '0');
+        }
     });
 
 

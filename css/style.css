@@ -184,11 +184,7 @@ a {
   background: var(--white);
   z-index: 1;
   transition: 0.5s;
-}
-
-.nav__menu-act {
-  top: 0;
-  opacity: 1;
+  opacity: 0;
 }
 
 .btn-menu {
