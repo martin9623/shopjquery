@@ -3,13 +3,12 @@ $(() => {
     //mostrar menu mobile
 
     $('#btn-menu').click(() => {
-        if ($('.nav__menu').css('opacity') == 0) {
-            $('.nav__menu').css('top', '0').css('opacity', '1');
-        } else if ($('.nav__menu').css('opacity') == 1) {
-            $('.nav__menu').css('top', '-60px').css('opacity', '0');
+        if ($('.nav__menu').css('top') == '-60px') {
+            $('.nav__menu').css('top', '0px');
+        } else if ($('.nav__menu').css('top') == '0px') {
+            $('.nav__menu').css('top', '-60px');
         }
     });
-
 
     //class
 
