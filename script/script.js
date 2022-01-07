@@ -3,18 +3,13 @@ $(() => {
     //mostrar menu mobile
 
     $('#btn-menu').click(() => {
-        if ($('.nav__menu').css('top') == '-60px') {
-            $('.nav__menu').css('top', '0px');
-        } else if ($('.nav__menu').css('top') == '0px') {
-            $('.nav__menu').css('top', '-60px');
-        }
+        $('.nav__menu').slideToggle();
     });
 
     //class
 
     class Producto {
-        constructor(id, url, marca, descripcion, precio, cantidad) {
-            this.id = id;
+        constructor(url, marca, descripcion, precio, cantidad) {
             this.url = url;
             this.marca = marca;
             this.descripcion = descripcion;
@@ -29,27 +24,25 @@ $(() => {
         const btn = $(e.target);
 
         if (btn.hasClass('btn-green')) {
-            $(e.target).addClass('btn-press-green');
+            btn.addClass('btn-press-green');
         } else if (btn.hasClass('btn-red')) {
-            $(e.target).addClass('btn-press-red');
+            btn.addClass('btn-press-red');
         } else if (btn.hasClass('btn')) {
-            $(e.target).addClass('btn-press');
+            btn.addClass('btn-press');
         }
     }).mouseup((e) => {
-        $(e.target).removeClass('btn-press');
-        $(e.target).removeClass('btn-press-red');
-        $(e.target).removeClass('btn-press-green');
+        const btn = $(e.target);
+
+        btn.removeClass('btn-press');
+        btn.removeClass('btn-press-red');
+        btn.removeClass('btn-press-green');
     });
 
     //open modal 
 
     function openModal(btn, modal, modalSec, modalTwo) {
         btn.click(() => {
-            if (modal.css('display') === 'none') {
-                modal.fadeIn();
-            } else {
-                modal.fadeOut();
-            }
+            modal.fadeToggle();
             modalSec.fadeOut();
             modalTwo.fadeOut();
         });
@@ -63,20 +56,21 @@ $(() => {
 
     openModal($('#btn-admin'), $('#admin'), $('#login'), $('#cart'));
     closeBtn($('#btn-close-admin'), $('#admin'));
+
     openModal($('#btn-login'), $('#login'), $('#admin'), $('#cart'));
     closeBtn($('#btn-close-login'), $('#login'));
+
     openModal($('#btn-cart'), $('#cart'), $('#login'), $('#admin'));
     closeBtn($('#btn-close-cart'), $('#cart'));
 
     //funcion crear productos en el DOM
 
-    function crearProd(id, img, marca, desc, precio) {
+    function crearProd(img, marca, desc, precio) {
         $('#main').append(
             `<div class="card">
                 <div class="card-img">
                     <img id="card-img__cont" src="${img}" alt="" class="card-img__cont">
                 </div>
-                <p id="card-id" class="card-id">${id}</p>
                 <h5 id="card-title" class="card-title">${marca}</h5>
                 <p id="card-desc" class="card-desc">${desc}</p>
                 <p id="card-precio" class="card-precio">${precio}</p>
@@ -90,14 +84,13 @@ $(() => {
 
     //funcion crear productos en el carrito
 
-    function addCart(id, img, marca, desc, precio, cantidad) {
+    function addCart(img, marca, desc, precio, cantidad) {
         $('#cart-cont').append(
             `<div id="cart-card" class="cart-card">
             <div class="cart-card__cont">
                 <img class="cart-card__cont__img"
                     src="${img}">
             </div>
-            <p class="cart-card__id">${id}</p>
             <h5 class="cart-card__title">${marca}</h5>
             <p class="cart-card__desc">${desc}</p>
             <p class="cart-card__precio">$${precio}</p>
@@ -112,14 +105,18 @@ $(() => {
 
     //datos desde JSON local
 
-    fetch('./productos.json')
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(producto => {
-                crearProd(producto.id, producto.img, producto.marca, producto.descripcion, producto.precio);
-            });
-        });
+    async function productosJson() {
+        const response = await fetch('./productos.json');
+        const productos = await response.json();
 
+        return productos;
+    }
+
+    productosJson().then(array => {
+        array.forEach(producto => {
+            crearProd(producto.img, producto.marca, producto.descripcion, producto.precio);
+        });
+    });
 
     //Añadir productos del local storage
 
@@ -135,7 +132,7 @@ $(() => {
 
     productos.forEach(producto => {
         if (producto != null) {
-            crearProd(producto.id, producto.url, producto.marca, producto.descripcion, producto.precio);
+            crearProd(producto.url, producto.marca, producto.descripcion, producto.precio);
         }
     });
 
@@ -146,7 +143,11 @@ $(() => {
 
         let datos = new FormData(e.target);
 
-        productos.push(new Producto(datos.get('id'), datos.get('url'), datos.get('marca'), datos.get('descripcion'), datos.get('precio')));
+        if (datos.get('url') == '') {
+            productos.push(new Producto('media/noImg.jpg', datos.get('marca'), datos.get('descripcion'), datos.get('precio')));
+        } else {
+            productos.push(new Producto(datos.get('url'), datos.get('marca'), datos.get('descripcion'), datos.get('precio')));
+        }
 
         localStorage.setItem('productos', JSON.stringify(productos));
 
@@ -169,7 +170,7 @@ $(() => {
 
     cart.forEach(producto => {
         if (producto != null) {
-            addCart(producto.id, producto.url, producto.marca, producto.descripcion, producto.precio, producto.cantidad);
+            addCart(producto.url, producto.marca, producto.descripcion, producto.precio, producto.cantidad);
         }
     });
 
@@ -178,14 +179,12 @@ $(() => {
         let target = $(e.target);
         let parent = target.parent();
 
-        let id = parent.children('p.card-id').text();
         let imgSrc = parent.children('div.card-img').children('img').attr('src');
         let marca = parent.children('h5').text();
         let desc = parent.children('p.card-desc').text();
         let precio = parent.children('p.card-precio').text();
 
-        let producto = new Producto(id, imgSrc, marca, desc, precio, 1);
-
+        let producto = new Producto(imgSrc, marca, desc, precio, 1);
 
         if (target.hasClass('btn')) {
             if (target.hasClass('btn-blue')) {
@@ -210,7 +209,6 @@ $(() => {
     //sumar cantidad cart y guardar en localStorage
 
     $('.cart-btn-cont').click((e) => {
-
         let target = $(e.target);
         let parent = target.parent();
         let container = parent.parent();
@@ -226,7 +224,6 @@ $(() => {
             }
         }
 
-        let id = container.children('.cart-card__id').text();
         let title = container.children('.cart-card__title').text();
         let desc = container.children('.cart-card__desc').text();
         let precio = container.children('.cart-card__precio').text().slice(1);

@@ -1,6 +1,5 @@
 [
   {
-    "id": "1",
     "img": "https://redsport.vteximg.com.br/arquivos/ids/973492-1000-1000/GA050003084.jpg?v=637039980497370000",
     "marca": "adidas",
     "descripcion": "remera",
@@ -8,7 +7,6 @@
     "cantidad": "1"
   },
   {
-    "id": "2",
     "img": "https://www.dexter.com.ar/on/demandware.static/-/Sites-dabra-catalog/default/dw28a0ba63/products/NI_CK2379-410/NI_CK2379-410-1.JPG",
     "marca": "nike",
     "descripcion": "remera",
@@ -16,7 +14,6 @@
     "cantidad": "1"
   },
   {
-    "id": "3",
     "img": "https://www.dexter.com.ar/on/demandware.static/-/Sites-dabra-catalog/default/dw88ff61a7/products/PU_852419-01/PU_852419-01_1.JPG",
     "marca": "puma",
     "descripcion": "remera",

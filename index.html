@@ -13,13 +13,8 @@
 <body>
     <header class="header">
         <nav class="nav mw">
-            <div class="nav_bar">
-                <a class="nav__logo" href="#">Shop</a>
+            <a class="nav__logo" href="#">Shop</a>
 
-                <button id="btn-menu" class="btn btn-menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
             <div id="nav__menu" class="nav__menu">
                 <button id="btn-admin" class="btn">
                     <i class="fas fa-user-cog"></i>
@@ -31,8 +26,6 @@
                 </button>
                 <button id="btn-cart" class="btn">
                     <i class="fas fa-shopping-cart"></i>
-                    <!-- cantidad de prod en carrito -->
-                    <!-- <span id="btn-cart-num" class="btn-cart-num">0</span> -->
                     Carrito
                 </button>
             </div>
@@ -42,7 +35,6 @@
     <section id="admin" class="modal-cont">
         <form id="formAdmin" action="" class="modal">
             <h4 class="formTitle">Agregar producto</h4>
-            <input class="input" type="Number" name="id" id="idForm" placeholder="id" value="4" required>
             <input class="input" type="text" name="url" id="urlForm" placeholder="Ingrese url (opcional)">
             <input class="input" type="text" name="marca" id="marcaForm" placeholder="Marca" required>
             <input class="input" type="text" name="descripcion" id="descripcionForm" placeholder="Descripcion" required>
